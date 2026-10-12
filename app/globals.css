@@ -2,6 +2,10 @@
 @import "tw-animate-css";
 @import "../vendor/shadcn-tailwind-4.13.0.css";
 
+/* Unused shadcn components stay in the repo but are not scanned, so their utilities do not ship
+   in the render-blocking stylesheet. Remove a name from this list when you start using it. */
+@source not "../components/ui/{alert,aspect-ratio,attachment,avatar,badge,breadcrumb,bubble,button-group,calendar,card,carousel,chart,checkbox,collapsible,combobox,command,context-menu,direction,drawer,dropdown-menu,empty,field,form,hover-card,input-group,input-otp,item,kbd,marker,menubar,message-scroller,message,native-select,navigation-menu,pagination,popover,progress,radio-group,resizable,scroll-area,select,separator,sidebar,skeleton,sonner,spinner,tabs,toggle-group,toggle,tooltip}.tsx";
+
 @utility scrollbar-thin { scrollbar-width: thin; }
 @utility scrollbar-none { scrollbar-width: none; &::-webkit-scrollbar { display: none; } }
 @utility scrollbar-gutter-stable { scrollbar-gutter: stable; }
@@ -314,9 +318,36 @@ button { cursor: pointer; }
 .home-motion-page .home-hero-lead { animation-delay: .22s; }
 .home-motion-page .home-hero-actions { animation-delay: .34s; }
 .home-motion-page .home-hero-art { animation-delay: .22s; }
+/* The headline, lead and hero image are the LCP candidates: they rise in but are never invisible, so they paint on the first frame. */
+.home-motion-page .home-hero-copy h1, .home-motion-page .home-hero-lead, .home-motion-page .home-hero-art { animation-name: motionRise; }
+@keyframes motionRise { from { transform: translateY(20px); } to { transform: translateY(0); } }
 .work-motion-page .work-page-hero h1 { animation-delay: .1s; }
 .work-motion-page .work-page-hero > .site-container > p:last-child { animation-delay: .22s; }
 @keyframes motionEnter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Intro, first visit per session only: the VISION letters rise out of a mask, the dot drops in,
+   then the paper sheet wipes up to uncover the page. Pure CSS so it stays smooth while the page
+   hydrates underneath. A head script sets data-intro="on" only for the first visit without reduced motion. */
+.intro { position: fixed; inset: 0; z-index: 2000; display: grid; place-items: center; background: var(--paper); pointer-events: none; will-change: transform; animation: introWipe .56s cubic-bezier(.76,0,.24,1) .9s both; }
+:root:not([data-intro="on"]) .intro { display: none; }
+.intro-word { display: flex; align-items: baseline; overflow: hidden; padding: .06em .12em .1em; color: var(--ink); font-size: clamp(3.6rem, 13vw, 7.5rem); font-weight: 900; letter-spacing: -.085em; line-height: 1; animation: introLift .56s cubic-bezier(.76,0,.24,1) .9s both; }
+.intro-word > span { display: inline-block; animation: introLetter .46s cubic-bezier(.22,1,.36,1) both; }
+.intro-word > span:nth-child(2) { animation-delay: .04s; }
+.intro-word > span:nth-child(3) { animation-delay: .08s; }
+.intro-word > span:nth-child(4) { animation-delay: .12s; }
+.intro-word > span:nth-child(5) { animation-delay: .16s; }
+.intro-word > span:nth-child(6) { animation-delay: .2s; }
+.intro-word > .intro-dot { color: var(--acid); animation: introDot .42s cubic-bezier(.34,1.56,.64,1) .42s both; }
+@keyframes introLetter { from { transform: translateY(105%); } }
+@keyframes introDot { from { opacity: 0; transform: translateY(-120%) scale(.4); } }
+@keyframes introLift { to { opacity: 0; transform: translateY(-40px); } }
+/* Only transform and opacity animate, so the intro runs on the compositor and stays smooth while the main thread hydrates. */
+@keyframes introWipe { to { transform: translateY(-100%); visibility: hidden; } }
+/* While the intro plays, the hero entrances wait for the sheet so they rise as it lifts. */
+:root[data-intro="on"] .home-motion-page .home-hero-copy > *, :root[data-intro="on"] .work-motion-page .work-page-hero .eyebrow { animation-delay: .9s; }
+:root[data-intro="on"] .home-motion-page .home-hero-copy h1, :root[data-intro="on"] .work-motion-page .work-page-hero h1 { animation-delay: 1s; }
+:root[data-intro="on"] .home-motion-page .home-hero-lead, :root[data-intro="on"] .home-motion-page .home-hero-art, :root[data-intro="on"] .work-motion-page .work-page-hero > .site-container > p:last-child { animation-delay: 1.12s; }
+:root[data-intro="on"] .home-motion-page .home-hero-actions { animation-delay: 1.24s; }
 
 .home-motion-page .home-growth-card { animation: homeCardFloat 7s ease-in-out infinite; }
 .home-motion-page .home-brand-card { animation: homeCardFloat 8s ease-in-out -2s infinite; }
@@ -427,7 +458,7 @@ button { cursor: pointer; }
   .home-motion-page .home-growth-card, .home-motion-page .home-brand-card, .home-motion-page .home-analytics-card { animation: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .home-motion-page .home-hero-copy > *, .home-motion-page .home-hero-art, .work-motion-page .work-page-hero .eyebrow, .work-motion-page .work-page-hero h1, .work-motion-page .work-page-hero > .site-container > p:last-child, .home-motion-page .home-growth-card, .home-motion-page .home-brand-card, .home-motion-page .home-analytics-card { animation: none; }
+  .home-motion-page .home-hero-copy > *, .home-motion-page .home-hero-copy h1, .home-motion-page .home-hero-art, .work-motion-page .work-page-hero .eyebrow, .work-motion-page .work-page-hero h1, .work-motion-page .work-page-hero > .site-container > p:last-child, .home-motion-page .home-growth-card, .home-motion-page .home-brand-card, .home-motion-page .home-analytics-card { animation: none; }
   .motion-page [data-motion-parallax] img, .motion-page .project-card:hover [data-motion-parallax] img, .motion-page .concept-preview:hover [data-motion-parallax] img { transform: none; }
   .motion-page.motion-ready [data-motion], .motion-page.motion-ready .motion-reveal { opacity: 1; transform: none; }
 }
