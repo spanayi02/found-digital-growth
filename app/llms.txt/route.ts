@@ -29,6 +29,7 @@ Website projects start at EUR 599 setup. Optional Website Care (hosting, updates
 - Pricing: ${siteConfig.url}/pricing
 - Free website audit: ${siteConfig.url}/free-audit
 - FAQ: ${siteConfig.url}/faq
+- Articles: ${siteConfig.url}/articles
 - Contact: ${siteConfig.url}/contact
 
 ## Contact
