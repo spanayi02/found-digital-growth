@@ -146,6 +146,9 @@ export function AuditForm() {
         Fields marked <strong>*</strong> are required.
       </p>
 
+      <fieldset className="form-step">
+      <legend><span>01</span> About you</legend>
+
       <div className="form-row">
         <Field
           label="Name"
@@ -155,7 +158,7 @@ export function AuditForm() {
         />
 
         <Field
-          label="Business Name"
+          label="Business name"
           name="businessName"
           required
           error={fields.businessName?.[0]}
@@ -178,12 +181,16 @@ export function AuditForm() {
           error={fields.phone?.[0]}
         />
       </div>
+      </fieldset>
+
+      <fieldset className="form-step">
+      <legend><span>02</span> Your website</legend>
 
       <Field
         label="Website"
         name="website"
         type="url"
-        placeholder="https://"
+        placeholder="https://yourbusiness.com"
         required
         error={fields.website?.[0]}
       />
@@ -192,19 +199,25 @@ export function AuditForm() {
         <Field
           label="Industry"
           name="industry"
+          placeholder="e.g. dental clinic, restaurant"
           error={fields.industry?.[0]}
         />
 
         <Field
           label="City"
           name="city"
+          placeholder="e.g. Limassol"
           error={fields.city?.[0]}
         />
       </div>
+      </fieldset>
+
+      <fieldset className="form-step">
+      <legend><span>03</span> What you need</legend>
 
       <div className="form-row">
         <SelectField
-          label="Main Goal"
+          label="Main goal"
           name="goal"
           value={goal}
           onChange={setGoal}
@@ -215,7 +228,7 @@ export function AuditForm() {
         />
 
         <SelectField
-          label="Approximate Budget"
+          label="Approximate budget"
           name="budget"
           value={budget}
           onChange={setBudget}
@@ -227,13 +240,14 @@ export function AuditForm() {
 
       <div className="form-field">
         <Label htmlFor="problem">
-          Current Problem
+          What is not working right now?
         </Label>
 
         <Textarea
           id="problem"
           name="problem"
-          rows={5}
+          rows={4}
+          placeholder="e.g. few enquiries, slow on mobile, hard to find on Google"
           aria-invalid={Boolean(fields.problem)}
         />
 
@@ -248,9 +262,10 @@ export function AuditForm() {
         <Textarea
           id="audit-message"
           name="message"
-          rows={5}
+          rows={4}
         />
       </div>
+      </fieldset>
 
       <div className="consent-field">
         <input

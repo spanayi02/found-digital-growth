@@ -48,7 +48,7 @@ Public settings use `NEXT_PUBLIC_` only when the browser needs them. Secrets sta
 - `NEXT_PUBLIC_SITE_URL`: canonical production origin
 - `NEXT_PUBLIC_CONTACT_EMAIL`, `NEXT_PUBLIC_CONTACT_PHONE`, `NEXT_PUBLIC_WHATSAPP_NUMBER`: central contact details
 - `NEXT_PUBLIC_GA_MEASUREMENT_ID`: GA4 measurement ID
-- `RESEND_API_KEY`, `EMAIL_FROM`, `EMAIL_TO`: Resend email delivery. `EMAIL_TO` accepts a comma-separated list of team recipients for every new Contact or Free Audit submission; the person submitting the form also receives an automatic confirmation.
+- `RESEND_API_KEY`, `EMAIL_FROM`, `EMAIL_TO`: Resend email delivery. `EMAIL_TO` accepts a comma-separated list of team recipients for every new Contact, Free Audit, Free Prototype or call request (`/book`) submission; the person submitting the form also receives an automatic confirmation.
 - `LEAD_WEBHOOK_URL`: optional n8n, Make, Zapier, HubSpot or custom CRM endpoint
 - `ADMIN_EMAILS`: comma-separated ChatGPT account emails allowed into `/admin`
 - optional Instagram and LinkedIn URLs

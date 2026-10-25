@@ -9,6 +9,9 @@ const attribution = {
   utmTerm: z.string().trim().max(160).optional().default(""),
 };
 
+// Call requests from /book travel through the contact endpoint under this service name.
+export const callRequestService = "Call request";
+
 export const contactSchema = z.object({
   name: z.string().trim().min(2, "Enter your name").max(100),
   businessName: z.string().trim().min(2, "Enter your business name").max(140),
@@ -17,6 +20,8 @@ export const contactSchema = z.object({
   website: optionalUrl.optional().default(""),
   service: z.string().trim().max(100).optional().default(""),
   packageName: z.string().trim().max(80).optional().default(""),
+  requestedTime: z.string().trim().max(120).optional().default(""),
+  meetingType: z.string().trim().max(40).optional().default(""),
   message: z.string().trim().min(10, "Tell us a little more about the project").max(3000),
   companyWebsite: z.string().max(0).optional().default(""),
   ...attribution,

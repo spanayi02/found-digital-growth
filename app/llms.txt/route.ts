@@ -28,6 +28,8 @@ Website projects start at EUR 599 setup. Optional Website Care (hosting, updates
 - Work / portfolio: ${siteConfig.url}/work
 - Pricing: ${siteConfig.url}/pricing
 - Free website audit: ${siteConfig.url}/free-audit
+- Free website prototype (a homepage designed before any commitment): ${siteConfig.url}/free-prototype
+- Book a call (Microsoft Teams, Zoom, Google Meet or phone): ${siteConfig.url}/book
 - FAQ: ${siteConfig.url}/faq
 - Articles: ${siteConfig.url}/articles
 - Contact: ${siteConfig.url}/contact

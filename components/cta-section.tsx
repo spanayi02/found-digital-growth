@@ -1,13 +1,12 @@
-import Link from "next/link";
-import { ArrowRight, Clock, MapPin, ShieldCheck } from "lucide-react";
+import { MapPin, ShieldCheck } from "lucide-react";
+import { StartOptions } from "@/components/start-options";
 
 const reassurances = [
-  [Clock, "Written review within two working days"],
   [ShieldCheck, "Free, with no obligation"],
   [MapPin, "Cyprus-based team"],
 ] as const;
 
-export function CTASection({ eyebrow = "Your next step", title = "Not sure where to begin?", body = "Start with a focused review of your website, visibility and customer journey.", label = "Get a Free Website Audit", href = "/free-audit" }: { eyebrow?: string; title?: string; body?: string; label?: string; href?: string }) {
+export function CTASection({ eyebrow = "Your next step", title = "Not sure where to begin?", body = "Choose the first step that suits you: a review of your website, a look at a new design, or a conversation." }: { eyebrow?: string; title?: string; body?: string }) {
   return (
     <section className="cta-section">
       <div className="site-container">
@@ -16,14 +15,11 @@ export function CTASection({ eyebrow = "Your next step", title = "Not sure where
             <p className="eyebrow">{eyebrow}</p>
             <h2>{title}</h2>
             <p>{body}</p>
-            <div className="cta-actions">
-              <Link className="button button-accent button-large" href={href}>{label}<ArrowRight aria-hidden="true" /></Link>
-              <Link className="button button-outline-light button-large" href="/contact">Talk to us</Link>
-            </div>
+            <ul className="cta-notes">
+              {reassurances.map(([Icon, text]) => <li key={text}><Icon aria-hidden="true" /><span>{text}</span></li>)}
+            </ul>
           </div>
-          <ul className="cta-reassurance">
-            {reassurances.map(([Icon, text]) => <li key={text}><i aria-hidden="true"><Icon /></i><span>{text}</span></li>)}
-          </ul>
+          <StartOptions />
         </div>
       </div>
     </section>

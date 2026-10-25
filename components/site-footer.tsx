@@ -13,6 +13,8 @@ const columns = [
       ["Work", "/work"],
       ["Pricing", "/pricing"],
       ["Free Audit", "/free-audit"],
+      ["Free Prototype", "/free-prototype"],
+      ["Book a Call", "/book"],
       ["Articles", "/articles"],
       ["Contact", "/contact"],
     ],

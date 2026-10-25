@@ -1,5 +1,6 @@
 import { safeHtml } from "@/lib/security";
 import { siteConfig } from "@/lib/site-config";
+import { callRequestService } from "@/lib/validation";
 
 // Email clients ignore most modern CSS, so these templates use tables and inline
 // styles only, no external fonts and no images: a blocked image must never hide
@@ -90,6 +91,7 @@ const str = (value: unknown) => (value == null ? "" : String(value));
 
 /** Sent to the person who filled in the form. */
 export function clientConfirmationEmail(kind: "contact" | "audit", payload: Payload): Email {
+  if (kind === "contact" && payload.service === callRequestService) return callRequestConfirmationEmail(payload);
   const person = str(payload.name).trim().split(/\s+/)[0] || "there";
   const business = str(payload.businessName).trim();
   const isAudit = kind === "audit";
@@ -154,16 +156,66 @@ export function clientConfirmationEmail(kind: "contact" | "audit", payload: Payl
   return { subject, html, text };
 }
 
+/** Sent to someone who asked for a call: the time is a request until we confirm it. */
+function callRequestConfirmationEmail(payload: Payload): Email {
+  const person = str(payload.name).trim().split(/\s+/)[0] || "there";
+  const requestedTime = str(payload.requestedTime);
+  const meetingType = str(payload.meetingType);
+  const subject = "We have your call request | VISION.";
+  const preheader = "We will check the time and confirm it with you.";
+  const nextSteps = [
+    "We check the time you picked against our calendar.",
+    "We confirm by email or phone, with the meeting link or the number we will call. If the slot is taken, we suggest the nearest free one.",
+    "We talk through the business and the sensible first step. No obligation.",
+  ];
+
+  const html = shell(preheader, [
+    heading(`Your call request is in,<br />${safeHtml(person)}.`),
+    paragraph(`We will check the time and <strong style="color:${INK}">confirm it with you</strong> before the call.`, 18),
+    summary([
+      ["Business", str(payload.businessName).trim()],
+      ["Requested time", requestedTime],
+      ["Meeting type", meetingType],
+    ]),
+    paragraph(`<strong style="color:${INK};font-size:12px;text-transform:uppercase;letter-spacing:1px">What happens next</strong>`, 28),
+    steps(nextSteps),
+    paragraph("Need a different time? Just reply to this email and it reaches us directly.", 10),
+    button("Explore our work", `${siteConfig.url}/work`),
+    spacer(),
+  ].join(""));
+
+  const text = [
+    `Your call request is in, ${person}.`,
+    "",
+    "We will check the time and confirm it with you before the call.",
+    "",
+    requestedTime ? `Requested time: ${requestedTime}` : "",
+    meetingType ? `Meeting type: ${meetingType}` : "",
+    "",
+    "What happens next",
+    ...nextSteps.map((item, index) => `${index + 1}. ${item}`),
+    "",
+    "Need a different time? Just reply to this email and it reaches us directly.",
+    "",
+    `${siteConfig.email} · ${siteConfig.phone}`,
+    `${siteConfig.url} — website development services in Cyprus`,
+  ].join("\n");
+
+  return { subject, html, text };
+}
+
 /** Sent to the team, so a new lead can be judged at a glance. */
 export function teamNotificationEmail(kind: "contact" | "audit", payload: Payload): Email {
   const business = str(payload.businessName).trim() || "New business";
   const isAudit = kind === "audit";
-  const subject = `${isAudit ? "Audit request" : "Enquiry"}: ${business}`;
+  const isCall = !isAudit && payload.service === callRequestService;
+  const title = isAudit ? "Audit request" : isCall ? "Call request" : "Enquiry";
+  const subject = `${title}: ${business}${isCall && payload.requestedTime ? `, ${str(payload.requestedTime)}` : ""}`;
 
   // Readable labels first, then anything else the form happens to carry.
   const labels: Record<string, string> = {
     name: "Name", businessName: "Business", email: "Email", phone: "Phone", website: "Website",
-    service: "Service", packageName: "Package", industry: "Industry", city: "City", goal: "Main goal",
+    service: "Service", requestedTime: "Requested time", meetingType: "Meeting type", packageName: "Package", industry: "Industry", city: "City", goal: "Main goal",
     problem: "Current problem", budget: "Budget", message: "Message",
     utmSource: "UTM source", utmMedium: "UTM medium", utmCampaign: "UTM campaign",
     utmContent: "UTM content", utmTerm: "UTM term",
@@ -191,16 +243,16 @@ export function teamNotificationEmail(kind: "contact" | "audit", payload: Payloa
     </tr>`;
   }).join("");
 
-  const html = shell(`${isAudit ? "Audit request" : "Enquiry"} from ${business}`, [
-    heading(`${isAudit ? "New audit request" : "New enquiry"}`),
-    paragraph(`From <strong style="color:${INK}">${safeHtml(business)}</strong>. Full details below, and in the admin area.`, 14),
+  const html = shell(`${title} from ${business}`, [
+    heading(`New ${title.toLowerCase()}`),
+    paragraph(`From <strong style="color:${INK}">${safeHtml(business)}</strong>. ${isCall ? "Confirm the time with them, or suggest another. " : ""}Full details below, and in the admin area.`, 14),
     `<tr><td style="padding:22px 32px 0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0">${rows}</table></td></tr>`,
     button("Open the admin area", `${siteConfig.url}/admin`),
     spacer(),
   ].join(""));
 
   const text = [
-    isAudit ? "New audit request" : "New enquiry",
+    `New ${title.toLowerCase()}`,
     `From ${business}`,
     "",
     ...entries.map(([key, value]) => `${labels[key] ?? key}: ${str(value)}`),

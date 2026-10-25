@@ -28,8 +28,8 @@ const nextConfig: NextConfig = {
   },
 
   async redirects() {
-    // The free website preview page was briefly live; its offer now lives in the free audit.
-    const retiredPages = [{ source: "/free-website-preview", destination: "/free-audit", permanent: true }];
+    // The free website preview page was briefly live; the offer now lives on as the free prototype.
+    const retiredPages = [{ source: "/free-website-preview", destination: "/free-prototype", permanent: true }];
 
     return [...retiredPages, ...duplicateHosts.map((host) => ({
       source: "/:path*",

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
 
 import { ContactForm } from "@/components/contact-form";
 import { PageMotion } from "@/components/page-motion";
+import { StartOptions } from "@/components/start-options";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
@@ -82,10 +82,12 @@ export default async function ContactPage({
                 We review the details and usually reply within two working
                 days. If a call is useful, we will arrange one.
               </p>
+            </div>
 
-              <Link href="/free-audit" className="text-link">
-                Prefer a structured audit?
-              </Link>
+            <div className="contact-start">
+              <strong>Or start another way</strong>
+
+              <StartOptions />
             </div>
           </div>
 

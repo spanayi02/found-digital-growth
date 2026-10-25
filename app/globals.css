@@ -1818,7 +1818,30 @@ body:has(.admin-login) > .site-header, body:has(.admin-login) > .site-footer { d
 .pricing-tabs button[aria-pressed="true"] > :last-child { color: var(--acid); }
 .pricing-tabs button:focus-visible { outline: 2px solid var(--acid); outline-offset: 2px; }
 
-/* Forms on phones: boxed, easy-to-tap fields instead of thin underlines. */
+/* Form fields: boxed, easy-to-tap fields instead of thin underlines, at every width. */
+.site-form .form-field { gap: 8px; }
+.site-form .form-field label { color: var(--ink); font-size: .82rem; font-weight: 600; letter-spacing: 0; text-transform: none; }
+.audit-form-grid > *, .contact-grid > *, .site-form, .form-row > * { min-width: 0; }
+/* Text fields only: the consent checkbox keeps its native look. iOS Safari needs appearance reset or it adds its own inset styling. */
+.site-form input:not([type="checkbox"]), .site-form textarea, .site-form select.site-select { max-width: 100%; min-height: 50px; border: 1px solid var(--line); border-radius: 12px; background-color: var(--paper) !important; padding: 12px 14px; color: var(--ink); font-size: .95rem; -webkit-appearance: none; appearance: none; }
+.site-form input::placeholder, .site-form textarea::placeholder { color: #9a998f; }
+.site-form input:not([type="checkbox"]):hover, .site-form textarea:hover, .site-form select.site-select:hover { border-color: #b9b5aa; }
+.site-form select.site-select { padding-right: 40px; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 fill=%27none%27 stroke=%27%2356564f%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27m4 6 4 4 4-4%27/%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 14px center !important; background-size: 16px !important; }
+.site-form .consent-checkbox { width: 20px !important; height: 20px; min-height: 20px !important; flex: 0 0 20px; margin: 0; padding: 0; border: 0; border-radius: 0; background: none !important; box-shadow: none; -webkit-appearance: checkbox; appearance: auto; }
+.site-form .consent-field { align-items: flex-start; gap: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); padding: 14px 16px; }
+.site-form .consent-field label { font-size: .82rem; line-height: 1.5; }
+.site-form textarea { min-height: 120px; }
+.site-form input:not([type="checkbox"]):focus-visible, .site-form textarea:focus-visible, .site-form select.site-select:focus-visible { border-color: var(--acid); box-shadow: 0 0 0 3px #3F35B526; background-color: var(--white) !important; }
+.site-form input:not([type="checkbox"])[aria-invalid="true"], .site-form textarea[aria-invalid="true"], .site-form select.site-select[aria-invalid="true"] { border-color: var(--destructive); box-shadow: 0 0 0 3px #b423181f; }
+.site-form .form-error-banner { border-radius: 10px; }
+/* Longer forms read as numbered steps, like the call booking form. */
+.form-step { display: grid; gap: 18px; min-width: 0; margin: 0; border: 0; border-top: 1px solid var(--line); padding: 28px 0 0; }
+.site-form > .form-step:first-of-type { border-top: 0; padding-top: 0; }
+.form-step legend { display: flex; float: left; width: 100%; align-items: center; gap: 12px; margin: 0; padding: 0; font-size: 1.15rem; font-weight: 600; letter-spacing: -.02em; }
+.form-step legend + * { clear: both; }
+.form-step legend span { color: var(--acid); font-size: .68rem; font-weight: 800; letter-spacing: .1em; }
+.form-step-hint { margin: -8px 0 0; color: var(--ink-soft); font-size: .84rem; line-height: 1.5; }
+.site-form:has(.form-step) .form-submit { width: 100%; justify-content: center; }
 @media (max-width: 700px) {
   .audit-form-section { padding: 64px 0; }
   .audit-form-grid { gap: 28px; }
@@ -1826,18 +1849,9 @@ body:has(.admin-login) > .site-header, body:has(.admin-login) > .site-footer { d
   .form-panel { padding: 22px 18px 24px; }
   .site-form { gap: 16px; }
   .form-row { gap: 16px; }
-  .form-field { gap: 7px; }
-  .form-field label { color: var(--ink); font-size: .8rem; font-weight: 600; letter-spacing: 0; text-transform: none; }
-  .audit-form-grid > *, .contact-grid > *, .site-form, .form-row > * { min-width: 0; }
-  /* Text fields only: the consent checkbox keeps its native look. iOS Safari needs appearance reset or it adds its own inset styling. */
-  .site-form input:not([type="checkbox"]), .site-form textarea, .site-form select.site-select { max-width: 100%; min-height: 48px; border: 1px solid var(--line); border-radius: 12px; background-color: var(--paper) !important; padding: 12px 14px; font-size: 16px; -webkit-appearance: none; appearance: none; }
-  .site-form select.site-select { padding-right: 40px; background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 fill=%27none%27 stroke=%27%2356564f%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3E%3Cpath d=%27m4 6 4 4 4-4%27/%3E%3C/svg%3E") !important; background-repeat: no-repeat !important; background-position: right 14px center !important; }
-  .site-form .consent-checkbox { width: 22px !important; height: 22px; min-height: 22px !important; flex: 0 0 22px; margin: 0; padding: 0; border: 0; border-radius: 0; background: none !important; box-shadow: none; -webkit-appearance: checkbox; appearance: auto; }
-  .consent-field { align-items: flex-start; gap: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--paper); padding: 14px; }
-  .consent-field label { font-size: .8rem; line-height: 1.45; }
+  .form-step { gap: 16px; padding-top: 22px; }
+  .site-form input:not([type="checkbox"]), .site-form textarea, .site-form select.site-select { min-height: 48px; font-size: 16px; }
   .site-form textarea { min-height: 108px; }
-  .site-form input:not([type="checkbox"]):focus-visible, .site-form textarea:focus-visible, .site-form select.site-select:focus-visible { border-color: var(--acid); box-shadow: 0 0 0 3px #3F35B526; background-color: var(--white) !important; }
-  .site-form input:not([type="checkbox"])[aria-invalid="true"], .site-form textarea[aria-invalid="true"], .site-form select.site-select[aria-invalid="true"] { border-color: var(--destructive); box-shadow: 0 0 0 3px #b423181f; }
   .site-form .form-submit { width: 100%; justify-content: center; }
 }
 @media (prefers-reduced-motion: reduce) { .compare-frame .compare-before { transition: none; } }
@@ -1851,26 +1865,114 @@ body:has(.admin-login) > .site-header, body:has(.admin-login) > .site-footer { d
   .process-list article:nth-child(n+4) { grid-column: span 3; }
 }
 
-/* Closing CTA above the footer: one lit panel with reassurance points. */
+/* Closing CTA above the footer: one lit panel with the three ways to start. */
 .cta-section { padding: 90px 0; background: var(--paper); color: var(--ink); }
-.cta-panel { position: relative; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, .65fr); align-items: center; gap: 48px; overflow: hidden; border-radius: 28px; background: #0b0b0a; color: var(--white); padding: 64px; isolation: isolate; }
+.cta-panel { position: relative; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); align-items: center; gap: 48px; overflow: hidden; border-radius: 28px; background: #0b0b0a; color: var(--white); padding: 64px; isolation: isolate; }
 .cta-panel::before { position: absolute; z-index: -1; inset: 0; content: ""; background: radial-gradient(60% 90% at 0% 0%, #3F35B566, transparent 70%), radial-gradient(50% 80% at 100% 100%, #2E269055, transparent 70%); }
 .cta-copy .eyebrow { margin: 0 0 18px; color: var(--acid-light); }
 .cta-copy h2 { max-width: 640px; margin: 0; font-size: clamp(2.4rem, 4.6vw, 4.4rem); font-weight: 500; letter-spacing: -.065em; line-height: .95; text-wrap: balance; }
 .cta-copy > p:not(.eyebrow) { max-width: 520px; margin: 20px 0 0; color: #bcbcb2; font-size: 1.02rem; line-height: 1.6; }
-.cta-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
-.cta-section .button-accent { background: var(--acid); color: var(--white); }
-.cta-section .button-accent:hover { background: var(--acid-dark); }
-.button-outline-light { border: 1px solid #ffffff40; background: transparent; color: var(--white); }
-.button-outline-light:hover { border-color: var(--white); background: #ffffff10; }
-.cta-reassurance { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
-.cta-reassurance li { display: flex; align-items: center; gap: 14px; border: 1px solid #ffffff14; border-radius: 16px; background: #ffffff08; padding: 16px 18px; color: #e8e7e1; font-size: .92rem; font-weight: 600; line-height: 1.35; }
-.cta-reassurance i { display: grid; width: 40px; height: 40px; flex: 0 0 40px; place-items: center; border-radius: 12px; background: var(--acid); color: var(--white); box-shadow: 0 10px 24px #3F35B566; }
-.cta-reassurance svg { width: 19px; height: 19px; }
+.cta-notes { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 28px 0 0; padding: 0; list-style: none; }
+.cta-notes li { display: flex; align-items: center; gap: 8px; color: #d8d7cf; font-size: .82rem; font-weight: 600; }
+.cta-notes svg { width: 15px; color: var(--acid-light); }
 @media (max-width: 900px) {
   .cta-section { padding: 56px 0; }
   .cta-panel { grid-template-columns: 1fr; gap: 28px; border-radius: 22px; padding: 36px 22px; }
-  .cta-actions .button { flex: 1 1 100%; justify-content: center; }
+}
+
+/* The three ways to start (audit, prototype, call). "panel" sits on dark surfaces, "menu" in the header popover. */
+.start-options { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.start-options a { display: flex; align-items: center; gap: 14px; border: 1px solid #ffffff14; border-radius: 16px; background: #ffffff08; padding: 14px 16px; color: var(--white); transition: border-color .2s ease, background .2s ease, transform .25s cubic-bezier(.22,.7,.2,1); }
+.start-options a:hover { border-color: #A29BF680; background: #3F35B526; transform: translateY(-2px); }
+.start-options a:focus-visible { outline: 2px solid var(--acid-light); outline-offset: 2px; }
+.start-options i { display: grid; width: 40px; height: 40px; flex: 0 0 40px; place-items: center; border-radius: 12px; background: var(--acid); color: var(--white); box-shadow: 0 10px 24px #3F35B566; }
+.start-options i svg { width: 19px; height: 19px; }
+.start-options span { display: grid; flex: 1; gap: 3px; min-width: 0; }
+.start-options strong { font-size: .95rem; font-weight: 600; line-height: 1.3; }
+.start-options small { color: #a9a89f; font-size: .78rem; line-height: 1.4; }
+.start-options a > svg { width: 17px; flex: none; color: #8f8e86; transition: color .2s ease, transform .2s ease; }
+.start-options a:hover > svg { color: var(--acid-light); transform: translate(2px, -2px); }
+.start-options-menu { gap: 4px; }
+.start-options-menu a { border-color: transparent; background: transparent; padding: 10px; color: var(--ink); }
+.start-options-menu a:hover { border-color: transparent; background: var(--paper); transform: none; }
+.start-options-menu a:focus-visible { outline-color: var(--acid); }
+.start-options-menu i { width: 36px; height: 36px; flex-basis: 36px; border-radius: 10px; box-shadow: none; }
+.start-options-menu i svg { width: 17px; height: 17px; }
+.start-options-menu small { color: var(--ink-soft); }
+.start-options-menu a:hover > svg { color: var(--acid); }
+.header-cta svg { width: 15px; height: 15px; transition: transform .2s ease; }
+.header-cta[data-state="open"] svg { transform: rotate(180deg); }
+.start-popover { width: 360px !important; border: 1px solid var(--line) !important; border-radius: 18px !important; background: var(--white) !important; padding: 10px !important; box-shadow: 0 24px 60px #11110f24 !important; }
+.start-popover-head { margin: 6px 10px 8px; color: var(--ink-soft); font-size: .66rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.mobile-sheet { overflow-y: auto; }
+.mobile-start { margin-top: auto; padding-top: 30px; }
+.mobile-start > p { margin: 0 0 12px; color: #9c9b91; font-size: .7rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+.contact-start { margin-top: 45px; }
+.contact-start > strong { display: block; margin-bottom: 16px; font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; }
+.audit-alt { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 30px; color: #aaa99f; font-size: .9rem; }
+.audit-alt .text-link { border-color: #fff; color: var(--white); }
+
+/* Free prototype page: reuses the audit page sections, plus a hero button and reassurance list. */
+.prototype-hero-cta { margin-top: 34px; }
+.prototype-reassurance { display: grid; gap: 14px; margin: 34px 0 0; padding: 0; list-style: none; }
+.prototype-reassurance li { display: flex; align-items: center; gap: 12px; color: #e3e2dc; font-size: .9rem; }
+.prototype-reassurance svg { flex: none; width: 18px; color: var(--acid-light); }
+.prototype-links { display: flex; flex-wrap: wrap; gap: 14px 40px; margin: 40px 0 0; color: var(--ink-soft); font-size: .95rem; }
+.prototype-links > span { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.prototype-links svg { width: 16px; color: var(--acid); }
+
+/* Book a call: steps beside the Cal.com scheduler. */
+.book-section { padding: 110px 0; background: var(--paper); }
+.book-grid { display: grid; grid-template-columns: minmax(0, .65fr) minmax(0, 1.35fr); align-items: start; gap: 70px; }
+.book-grid > div:first-child { position: sticky; top: 120px; }
+.book-grid h2 { margin: 0; font-size: clamp(2.4rem, 4vw, 4rem); font-weight: 500; letter-spacing: -.065em; line-height: .97; }
+.book-steps { display: grid; gap: 22px; margin: 40px 0 0; padding: 0; list-style: none; }
+.book-steps li { display: flex; gap: 16px; border-top: 1px solid var(--line); padding-top: 20px; }
+.book-steps span { color: var(--acid); font-size: .68rem; font-weight: 800; letter-spacing: .1em; }
+.book-steps strong { font-size: 1.02rem; font-weight: 600; }
+.book-steps p { margin: 6px 0 0; color: var(--ink-soft); font-size: .88rem; line-height: 1.55; }
+.book-alt { margin: 40px 0 0; color: var(--ink-soft); font-size: .9rem; line-height: 1.7; }
+.book-alt .text-link { display: inline; padding: 0 0 2px; color: var(--ink); }
+#book-call, #prototype-form { scroll-margin-top: 90px; }
+.book-calendar { border: 1px solid var(--line); border-radius: 24px; background: var(--white); padding: 44px; box-shadow: 0 30px 70px #11110f12; }
+.booking-form { gap: 30px; }
+.style-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.style-chips .booking-chip { padding: 0 16px; border-radius: 999px; }
+.booking-when { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 28px; }
+.booking-calendar { min-height: 318px; border: 1px solid var(--line); border-radius: 18px; padding: 16px; }
+.booking-calendar-loading { background: var(--paper); }
+.booking-calendar-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.booking-calendar-head strong { font-size: .95rem; font-weight: 600; }
+.booking-calendar-head button { display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--ink); }
+.booking-calendar-head button:hover:not(:disabled) { border-color: var(--ink); }
+.booking-calendar-head button:disabled { opacity: .3; cursor: default; }
+.booking-calendar-head svg { width: 16px; }
+.booking-calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.booking-weekday { padding: 6px 0; color: var(--ink-soft); font-size: .66rem; font-weight: 700; letter-spacing: .08em; text-align: center; text-transform: uppercase; }
+.booking-day { aspect-ratio: 1; border: 0; border-radius: 10px; background: var(--paper); color: var(--ink); font-size: .86rem; font-weight: 600; transition: background .15s ease, color .15s ease; }
+.booking-day:hover:not(:disabled) { background: #3F35B522; }
+.booking-day:disabled { background: transparent; color: #b9b6ac; font-weight: 400; cursor: default; }
+.booking-day[aria-pressed="true"], .booking-chip[aria-pressed="true"], .booking-type[aria-pressed="true"] { border-color: var(--acid); background: var(--acid); color: var(--white); }
+.booking-day:focus-visible, .booking-chip:focus-visible, .booking-type:focus-visible, .booking-calendar-head button:focus-visible { outline: 2px solid var(--acid); outline-offset: 2px; }
+.booking-times > p { margin: 4px 0 14px; font-size: .95rem; font-weight: 600; }
+.booking-times > div { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.booking-times small { display: block; margin-top: 14px; color: var(--ink-soft); font-size: .76rem; }
+.booking-chip { min-height: 42px; border: 1px solid var(--line); border-radius: 10px; background: transparent; color: var(--ink); font-size: .84rem; font-weight: 600; transition: border-color .15s ease, background .15s ease, color .15s ease; }
+.booking-chip:hover:not(:disabled) { border-color: var(--acid); }
+.booking-chip:disabled { opacity: .35; cursor: default; }
+.booking-types { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.booking-type { display: flex; min-height: 88px; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: 12px; border: 1px solid var(--line); border-radius: 14px; background: transparent; padding: 14px; color: var(--ink); font-size: .86rem; font-weight: 600; text-align: left; transition: border-color .15s ease, background .15s ease, color .15s ease; }
+.booking-type:hover { border-color: var(--acid); }
+.booking-type svg { width: 18px; color: var(--acid); }
+.booking-type[aria-pressed="true"] svg { color: var(--white); }
+.booking-form .form-submit { width: 100%; }
+.booking-success > p:not(.eyebrow) { max-width: 520px; color: var(--ink-soft); line-height: 1.65; }
+@media (max-width: 1100px) { .booking-when { grid-template-columns: 1fr; } .booking-types { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 900px) {
+  .book-section { padding: 56px 0; }
+  .book-grid { grid-template-columns: 1fr; gap: 40px; }
+  .book-grid > div:first-child { position: static; }
+  .book-calendar { order: -1; border-radius: 18px; padding: 24px 18px; }
 }
 
 

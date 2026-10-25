@@ -1,9 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { ChevronDown, Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { navigation, siteConfig } from "@/lib/site-config";
+import { StartOptions } from "@/components/start-options";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Sheet,
   SheetClose,
@@ -17,6 +20,8 @@ import {
 export function SiteHeader() {
   const pathname = usePathname();
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const [startOpen, setStartOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="site-header">
@@ -31,10 +36,16 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <Link className="button button-dark header-cta" href="/free-audit">
-          Get a Free Audit
-        </Link>
-        <Sheet>
+        <Popover open={startOpen} onOpenChange={setStartOpen}>
+          <PopoverTrigger className="button button-dark header-cta">
+            Get started <ChevronDown aria-hidden="true" />
+          </PopoverTrigger>
+          <PopoverContent className="start-popover" align="end" sideOffset={10}>
+            <p className="start-popover-head">Free, with no obligation</p>
+            <StartOptions variant="menu" onSelect={() => setStartOpen(false)} />
+          </PopoverContent>
+        </Popover>
+        <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
           <SheetTrigger className="mobile-menu-trigger" aria-label="Open navigation">
             <Menu aria-hidden="true" />
           </SheetTrigger>
@@ -49,11 +60,10 @@ export function SiteHeader() {
                   <Link href={item.href} className={isActive(item.href) ? "is-active" : undefined} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</Link>
                 </SheetClose>
               ))}
-              <SheetClose asChild>
-                <Link className="button button-accent" href="/free-audit">
-                  Get a Free Website Audit
-                </Link>
-              </SheetClose>
+              <div className="mobile-start">
+                <p>Get started</p>
+                <StartOptions onSelect={() => setMenuOpen(false)} />
+              </div>
             </nav>
           </SheetContent>
         </Sheet>
